@@ -1,4 +1,5 @@
 //定制请求的实例
+import { ElMessage } from "element-plus";
 
 //导入axios  npm install axios
 import axios from "axios";
@@ -15,11 +16,13 @@ instance.interceptors.response.use(
       return result.data
     }
     // 操作失败
-    alert(result.data.message?result.data.message:"服务器异常")
+    // alert(result.data.message?result.data.message:"服务器异常")
+    ElMessage.error(result.data.message?result.data.message:"服务器异常")
     return Promise.reject(result.data)//异步的状态转化成失败的状态
   },
   (err) => {
-    alert(err?err:"服务器异常");
+    // alert(err?err:"服务器异常");
+    ElMessage.error(err?err:"服务器异常")
     return Promise.reject(err); //异步的状态转化成失败的状态
   }
 );

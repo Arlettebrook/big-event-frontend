@@ -1,6 +1,7 @@
 <script setup>
 import { User, Lock } from "@element-plus/icons-vue";
 import { ref, reactive } from "vue";
+import { ElMessage } from "element-plus";
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false);
 
@@ -47,8 +48,8 @@ const register = async () => {
     alert(result.message ? result.message : "注册失败");
   } */
   // 对象响应判断封装到了拦截器里面了
-  alert(result.message ? result.message : "注册成功");
-
+  // alert(result.message ? result.message : "注册成功");
+  ElMessage.success(result.message ? result.message : "注册成功");
 };
 
 // 绑定登录绑定的数据，复用注册数据模型
@@ -62,14 +63,15 @@ const login = async () => {
   } else {
     alert(result.message ? result.message : "登录失败");
   } */
-  alert(result.message ? result.message : "登录成功");
+  // alert(result.message ? result.message : "登录成功");
+  ElMessage.success(result.message ? result.message : "登录成功");
 };
 
 // 定义函数，清空数据模型的数据
 const clearRegisterData = () => {
-  registerData.username=''
-  registerData.password=''
-  registerData.rePassword=''
+  registerData.username = "";
+  registerData.password = "";
+  registerData.rePassword = "";
 };
 </script>
 
