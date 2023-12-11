@@ -10,7 +10,13 @@ const instance = axios.create({ baseURL });
 //添加响应拦截器
 instance.interceptors.response.use(
   (result) => {
-    return result.data;
+    // 判断业务状态码
+    if(result.data.code===0){
+      return result.data
+    }
+    // 操作失败
+    alert(result.data.message?result.data.message:"服务器异常")
+    return Promise.reject(result.data)//异步的状态转化成失败的状态
   },
   (err) => {
     alert(err?err:"服务器异常");

@@ -40,12 +40,15 @@ const rules = reactive({
 import { userRegisterService, userLoginService } from "@/api/user.js";
 const register = async () => {
   let result = await userRegisterService(registerData);
-  if (result.code === 0) {
+  /* if (result.code === 0) {
     // 成功了
     alert(result.message ? result.message : "注册成功");
   } else {
     alert(result.message ? result.message : "注册失败");
-  }
+  } */
+  // 对象响应判断封装到了拦截器里面了
+  alert(result.message ? result.message : "注册成功");
+
 };
 
 // 绑定登录绑定的数据，复用注册数据模型
@@ -54,11 +57,12 @@ const register = async () => {
 const login = async () => {
   // 调用接口，完成登录
   let result = await userLoginService(registerData);
-  if (result.code === 0) {
+  /* if (result.code === 0) {
     alert(result.message ? result.message : "登录成功");
   } else {
     alert(result.message ? result.message : "登录失败");
-  }
+  } */
+  alert(result.message ? result.message : "登录成功");
 };
 
 // 定义函数，清空数据模型的数据
