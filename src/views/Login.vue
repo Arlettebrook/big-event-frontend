@@ -35,6 +35,38 @@ const rules = reactive({
   // 自定义表单校验规则
   rePassword: [{ validator: checkRePassword, trigger: "blur" }],
 });
+
+// 调用后台接口完成注册
+import { userRegisterService, userLoginService } from "@/api/user.js";
+const register = async () => {
+  let result = await userRegisterService(registerData);
+  if (result.code === 0) {
+    // 成功了
+    alert(result.message ? result.message : "注册成功");
+  } else {
+    alert(result.message ? result.message : "注册失败");
+  }
+};
+
+// 绑定登录绑定的数据，复用注册数据模型
+// 登录表单校验，复用注册表单校验规则
+// 登录函数
+const login = async () => {
+  // 调用接口，完成登录
+  let result = await userLoginService(registerData);
+  if (result.code === 0) {
+    alert(result.message ? result.message : "登录成功");
+  } else {
+    alert(result.message ? result.message : "登录失败");
+  }
+};
+
+// 定义函数，清空数据模型的数据
+const clearRegisterData = () => {
+  registerData.username=''
+  registerData.password=''
+  registerData.rePassword=''
+};
 </script>
 
 <template>
@@ -80,30 +112,54 @@ const rules = reactive({
         </el-form-item>
         <!-- 注册按钮 -->
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space>
+          <el-button
+            class="button"
+            type="primary"
+            auto-insert-space
+            @click="register"
+          >
             注册
           </el-button>
         </el-form-item>
         <el-form-item class="flex">
-          <el-link type="info" :underline="false" @click="isRegister = false">
+          <el-link
+            type="info"
+            :underline="false"
+            @click="
+              isRegister = false;
+              clearRegisterData();
+            "
+          >
             ← 返回
           </el-link>
         </el-form-item>
       </el-form>
       <!-- 登录表单 -->
-      <el-form ref="form" size="large" autocomplete="off" v-else>
+      <el-form
+        ref="form"
+        size="large"
+        autocomplete="off"
+        v-else
+        :model="registerData"
+        :rules="rules"
+      >
         <el-form-item>
           <h1>登录</h1>
         </el-form-item>
-        <el-form-item>
-          <el-input :prefix-icon="User" placeholder="请输入用户名"></el-input>
+        <el-form-item prop="username">
+          <el-input
+            :prefix-icon="User"
+            placeholder="请输入用户名"
+            v-model="registerData.username"
+          ></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input
             name="password"
             :prefix-icon="Lock"
             type="password"
             placeholder="请输入密码"
+            v-model="registerData.password"
           ></el-input>
         </el-form-item>
         <el-form-item class="flex">
@@ -114,12 +170,23 @@ const rules = reactive({
         </el-form-item>
         <!-- 登录按钮 -->
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space
+          <el-button
+            class="button"
+            type="primary"
+            auto-insert-space
+            @click="login"
             >登录</el-button
           >
         </el-form-item>
         <el-form-item class="flex">
-          <el-link type="info" :underline="false" @click="isRegister = true">
+          <el-link
+            type="info"
+            :underline="false"
+            @click="
+              isRegister = true;
+              clearRegisterData();
+            "
+          >
             注册 →
           </el-link>
         </el-form-item>
