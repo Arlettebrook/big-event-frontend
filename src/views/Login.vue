@@ -52,6 +52,9 @@ const register = async () => {
   ElMessage.success(result.message ? result.message : "注册成功");
 };
 
+// 导入路由器实现跳转
+import {useRouter} from 'vue-router'
+const router = useRouter()
 // 绑定登录绑定的数据，复用注册数据模型
 // 登录表单校验，复用注册表单校验规则
 // 登录函数
@@ -65,6 +68,9 @@ const login = async () => {
   } */
   // alert(result.message ? result.message : "登录成功");
   ElMessage.success(result.message ? result.message : "登录成功");
+
+  // 跳转到首页，路由实现跳转
+  router.push('/')
 };
 
 // 定义函数，清空数据模型的数据

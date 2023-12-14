@@ -17,6 +17,9 @@ dependencies:
   vue:
     specifier: ^3.3.8
     version: 3.3.11
+  vue-router:
+    specifier: ^4.2.5
+    version: 4.2.5(vue@3.3.11)
 
 devDependencies:
   '@vitejs/plugin-vue':
@@ -456,6 +459,10 @@ packages:
     dependencies:
       '@vue/compiler-dom': 3.3.11
       '@vue/shared': 3.3.11
+
+  /@vue/devtools-api@6.5.1:
+    resolution: {integrity: sha512-+KpckaAQyfbvshdDW5xQylLni1asvNSGme1JFs8I1+/H5pHEhqUKMEQD/qn3Nx5+/nycBq11qAEi8lk+LXI2dA==}
+    dev: false
 
   /@vue/reactivity-transform@3.3.11:
     resolution: {integrity: sha512-fPGjH0wqJo68A0wQ1k158utDq/cRyZNlFoxGwNScE28aUFOKFEnCBsvyD8jHn+0kd0UKVpuGuaZEQ6r9FJRqCg==}
@@ -901,6 +908,15 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
+      vue: 3.3.11
+    dev: false
+
+  /vue-router@4.2.5(vue@3.3.11):
+    resolution: {integrity: sha512-DIUpKcyg4+PTQKfFPX88UWhlagBEBEfJ5A8XDXRJLUnZOvcpMF8o/dnL90vpVkGaPbjvXazV/rC1qBKrZlFugw==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.5.1
       vue: 3.3.11
     dev: false
 
