@@ -53,8 +53,11 @@ const register = async () => {
 };
 
 // 导入路由器实现跳转
-import {useRouter} from 'vue-router'
-const router = useRouter()
+import { useRouter } from "vue-router";
+import { useTokenStore } from "@/stores/token.js";
+
+const router = useRouter();
+const tokenStore = useTokenStore();
 // 绑定登录绑定的数据，复用注册数据模型
 // 登录表单校验，复用注册表单校验规则
 // 登录函数
@@ -69,8 +72,10 @@ const login = async () => {
   // alert(result.message ? result.message : "登录成功");
   ElMessage.success(result.message ? result.message : "登录成功");
 
+  tokenStore.setToken(result.data);
+
   // 跳转到首页，路由实现跳转
-  router.push('/')
+  router.push("/");
 };
 
 // 定义函数，清空数据模型的数据

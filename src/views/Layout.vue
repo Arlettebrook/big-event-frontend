@@ -22,7 +22,6 @@ import avatar from "@/assets/default.png";
         background-color="#232323"
         text-color="#fff"
         router
-        default-active="/article/Manage"
       >
         <el-menu-item index="/article/category">
           <el-icon>
