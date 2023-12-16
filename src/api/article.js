@@ -22,6 +22,5 @@ export const articleCategoryUpdateService=(categoryData)=>{
 
 // 文章分类删除接口
 export const articleCategoryDeleteService=(id)=>{
-  console.log(id)
   return request.delete('/category?id='+id)
 }
