@@ -14,3 +14,8 @@ export const articleCategoryListService = () => {
 export const articleCategoryAddService = (categoryData) => {
   return request.post('/category',categoryData)
 };
+
+// 文章分类修改接口
+export const articleCategoryUpdateService=(categoryData)=>{
+  return request.put('/category',categoryData)
+}
