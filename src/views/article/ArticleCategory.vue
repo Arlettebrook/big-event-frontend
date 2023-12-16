@@ -30,6 +30,7 @@ import {
   articleCategoryListService,
   articleCategoryAddService,
   articleCategoryUpdateService,
+  articleCategoryDeleteService,
 } from "@/api/article.js";
 const articleCategoryList = async () => {
   let result = await articleCategoryListService();
@@ -106,6 +107,32 @@ const updateCategory = async () => {
   // 清空模型数据
   clearArticleCategoryModelData();
 };
+
+// 删除文章分类
+import { ElMessageBox } from "element-plus";
+const deleteCategory = (row) => {
+  ElMessageBox.confirm("你确认要删除该分类信息吗？", "温馨提示", {
+    confirmButtonText: "是的",
+    cancelButtonText: "不行",
+    type: "warning",
+  })
+    .then(async () => {
+      // 确认调用删除接口
+      let result = await articleCategoryDeleteService(row.id);
+      ElMessage({
+        type: "success",
+        message: result.message ? result.message : "删除成功",
+      });
+      // 刷新列表
+      articleCategoryList();
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "用户取消了删除",
+      });
+    });
+};
 </script>
 
 <template>
@@ -138,7 +165,13 @@ const updateCategory = async () => {
             type="primary"
             @click="showDialog(row)"
           ></el-button>
-          <el-button :icon="Delete" circle plain type="danger" @click="deleteCategory()"></el-button>
+          <el-button
+            :icon="Delete"
+            circle
+            plain
+            type="danger"
+            @click="deleteCategory(row)"
+          ></el-button>
         </template>
       </el-table-column>
       <template #empty>
