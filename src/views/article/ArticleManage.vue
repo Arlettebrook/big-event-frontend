@@ -79,10 +79,12 @@ const pageSize = ref(3); //每页条数
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
   pageSize.value = size;
+  articleList();
 };
 //当前页码发生变化，调用此函数
 const onCurrentChange = (num) => {
   pageNum.value = num;
+  articleList();
 };
 
 // 调用文章分类列表查询接口，覆盖调文章分类数据模型
@@ -101,7 +103,7 @@ const articleList = async () => {
   let params = {
     pageNum: pageNum.value,
     pageSize: pageSize.value,
-    categoryId: categoryId.value ? categoryId : null,
+    categoryId: categoryId.value ? categoryId.value : null,
     state: state.value ? state.value : null,
   };
   let result = await articleListService(params);
@@ -121,6 +123,15 @@ const articleList = async () => {
 };
 
 articleList();
+
+// 重置恢复默认，清除搜索数据
+const clearSeacherData = () => {
+  categoryId.value = "";
+  state.value = "";
+  pageNum.value = 1;
+  pageSize.value = 3;
+  articleList();
+};
 </script>
 
 <template>
@@ -154,8 +165,8 @@ articleList();
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">搜索</el-button>
-        <el-button>重置</el-button>
+        <el-button type="primary" @click="articleList">搜索</el-button>
+        <el-button @click="clearSeacherData">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 文章列表 -->
