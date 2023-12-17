@@ -36,7 +36,7 @@ const state = ref("");
 
 //文章列表数据模型
 const articles = ref([
-  {
+  /* {
     id: 5,
     title: "陕西旅游攻略",
     content: "兵马俑,华清池,法门寺,华山...爱去哪去哪...",
@@ -68,7 +68,7 @@ const articles = ref([
     categoryId: 2,
     createTime: "2023-09-03 11:55:30",
     updateTime: "2023-09-03 11:55:30",
-  },
+  }, */
 ]);
 
 //分页条数据模型
@@ -86,12 +86,41 @@ const onCurrentChange = (num) => {
 };
 
 // 调用文章分类列表查询接口，覆盖调文章分类数据模型
-import { articleCategoryListService } from "@/api/article.js";
+import {
+  articleCategoryListService,
+  articleListService,
+} from "@/api/article.js";
 const articleCategoryList = async () => {
   let result = await articleCategoryListService();
   categorys.value = result.data;
 };
 articleCategoryList();
+
+// 调用获取文章列表接口
+const articleList = async () => {
+  let params = {
+    pageNum: pageNum.value,
+    pageSize: pageSize.value,
+    categoryId: categoryId.value ? categoryId : null,
+    state: state.value ? state.value : null,
+  };
+  let result = await articleListService(params);
+
+  // 渲染视图
+  total.value = result.data.total;
+  articles.value = result.data.items;
+  // 处理数据，给数据模型扩展一个属性categoryName：分类名称
+  for (let i = 0; i < articles.value.length; i++) {
+    let article = articles.value[i];
+    for (let j = 0; j < categorys.value.length; j++) {
+      if (article.categoryId === categorys.value[j].id) {
+        article.categoryName = categorys.value[j].categoryName;
+      }
+    }
+  }
+};
+
+articleList();
 </script>
 
 <template>
@@ -136,7 +165,7 @@ articleCategoryList();
         width="400"
         prop="title"
       ></el-table-column>
-      <el-table-column label="分类" prop="categoryId"></el-table-column>
+      <el-table-column label="分类" prop="categoryName"></el-table-column>
       <el-table-column label="发表时间" prop="createTime"> </el-table-column>
       <el-table-column label="状态" prop="state"></el-table-column>
       <el-table-column label="操作" width="100">
