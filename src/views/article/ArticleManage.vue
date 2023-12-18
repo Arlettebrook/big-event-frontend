@@ -91,6 +91,7 @@ const onCurrentChange = (num) => {
 import {
   articleCategoryListService,
   articleListService,
+  articleAddService,
 } from "@/api/article.js";
 const articleCategoryList = async () => {
   let result = await articleCategoryListService();
@@ -134,6 +135,7 @@ const clearSeacherData = () => {
 };
 
 import { Plus } from "@element-plus/icons-vue";
+import { ElMessage } from "element-plus";
 //控制抽屉是否显示
 const visibleDrawer = ref(false);
 //添加表单数据模型
@@ -145,7 +147,42 @@ const articleModel = ref({
   state: "",
 });
 
+// 富文本编辑器quill
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
+// import axios from 'axios'
+const upload = (param) => {
+  const formData = new FormData();
+  formData.append("file", param.file);
+  const url = "/upload";
+  fetch(url, {
+    method: "post",
+    boday: formData,
+  })
+    .then((response) => {
+      console.log("请求成功", response);
+    })
+    .catch((error) => {
+      console.error("请求失败", error);
+    });
+  // axios.post(url, formData).then(response => {
+  //   console.log('上传图片成功')
+  // }).catch(error => {
+  //   console.log('图片上传失败')
+  // })
+};
+
+// 上传图片:上传成功的回调
+const uploadSuccess = (result) => {
+  console.log(result);
+};
+
+// 调用添加文章接口
+const articleAdd = async () => {
+  let result = await articleAddService(articleModel.value);
+  ElMessage.success(result.message ? result.message : "添加成功");
+};
 </script>
 
 <template>
@@ -154,7 +191,9 @@ const articleModel = ref({
       <div class="header">
         <span>文章管理</span>
         <div class="extra">
-          <el-button type="primary" @click="visibleDrawer=true">添加文章</el-button>
+          <el-button type="primary" @click="visibleDrawer = true"
+            >添加文章</el-button
+          >
         </div>
       </div>
     </template>
@@ -214,59 +253,79 @@ const articleModel = ref({
       @current-change="onCurrentChange"
       style="margin-top: 20px; justify-content: flex-end"
     />
-  </el-card>
 
-  <!-- 抽屉 -->
-  <el-drawer
-    v-model="visibleDrawer"
-    title="添加文章"
-    direction="rtl"
-    size="50%"
-  >
-    <!-- 添加文章表单 -->
-    <el-form :model="articleModel" label-width="100px">
-      <el-form-item label="文章标题">
-        <el-input
-          v-model="articleModel.title"
-          placeholder="请输入标题"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="文章分类">
-        <el-select placeholder="请选择" v-model="articleModel.categoryId">
-          <el-option
-            v-for="c in categorys"
-            :key="c.id"
-            :label="c.categoryName"
-            :value="c.id"
+    <!-- 抽屉 -->
+    <el-drawer
+      v-model="visibleDrawer"
+      title="添加文章"
+      direction="rtl"
+      size="50%"
+    >
+      <!-- 添加文章表单 -->
+      <el-form :model="articleModel" label-width="100px">
+        <el-form-item label="文章标题">
+          <el-input
+            v-model="articleModel.title"
+            placeholder="请输入标题"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="文章分类">
+          <el-select placeholder="请选择" v-model="articleModel.categoryId">
+            <el-option
+              v-for="c in categorys"
+              :key="c.id"
+              :label="c.categoryName"
+              :value="c.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="文章封面">
+          <el-upload
+            class="avatar-uploader"
+            :auto-upload="true"
+            :show-file-list="false"
+            action=""
+            :http-request="upload"
+            name="file"
+            :on-success="uploadSuccess"
           >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="文章封面">
-        <el-upload
-          class="avatar-uploader"
-          :auto-upload="false"
-          :show-file-list="false"
-        >
-          <img
-            v-if="articleModel.coverImg"
-            :src="articleModel.coverImg"
-            class="avatar"
-          />
-          <el-icon v-else class="avatar-uploader-icon">
-            <Plus />
-          </el-icon>
-        </el-upload>
-      </el-form-item>
-      <el-form-item label="文章内容">
-        <div class="editor">富文本编辑器</div>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary">发布</el-button>
-        <el-button type="info">草稿</el-button>
-      </el-form-item>
-    </el-form>
-  </el-drawer>
+            <img
+              v-if="articleModel.coverImg"
+              :src="articleModel.coverImg"
+              class="avatar"
+            />
+            <el-icon v-else class="avatar-uploader-icon">
+              <Plus />
+            </el-icon>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="文章内容">
+          <!-- <div class="editor">富文本编辑器</div> -->
+          <div class="editor">
+            <form
+              action="https://telegra.ph/upload"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <input type="file" name="fileToUpload" id="fileToUpload" />
+              <input type="submit" value="上传" name="submit" />
+            </form>
+            <quill-editor
+              theme="snow"
+              v-model:content="articleModel.content"
+              contentType="html"
+            >
+            </quill-editor>
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">发布</el-button>
+          <el-button type="info">草稿</el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
+  </el-card>
 </template>
 
 <style lang="scss" scoped>
@@ -315,7 +374,7 @@ const articleModel = ref({
 .editor {
   width: 100%;
   :deep(.ql-editor) {
-    min-height: 200px;
+    min-height: 120px;
   }
 }
 </style>
