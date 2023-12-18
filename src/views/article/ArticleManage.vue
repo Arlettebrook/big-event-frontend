@@ -161,14 +161,14 @@ const upload = (param) => {
     boday: formData,
   })
     .then((response) => {
-      response.json()
+      response.text()
       console.log("请求成功", response);
       console.log("请求成功", response.body);
     }).then(data=>{
       console('数据：',data)
     })
     .catch((error) => {
-      console.error("请求失败", error);
+      console.error( error);
     });
   // axios.post(url, formData).then(response => {
   //   console.log('上传图片成功')
