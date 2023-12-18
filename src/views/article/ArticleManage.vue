@@ -155,7 +155,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 const upload = (param) => {
   const formData = new FormData();
   formData.append("file", param.file);
-  const url = "/upload";
+  const url = "https://telegra.ph/upload";
   fetch(url, {
     method: "post",
     body: formData,
