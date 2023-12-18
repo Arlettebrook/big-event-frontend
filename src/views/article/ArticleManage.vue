@@ -162,6 +162,7 @@ const upload = (param) => {
   })
     .then((response) => {
       console.log("请求成功", response);
+      console.log("请求成功", response.body);
     })
     .catch((error) => {
       console.error("请求失败", error);
