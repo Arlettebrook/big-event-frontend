@@ -294,11 +294,11 @@ const articleAdd = async () => {
             class="avatar-uploader"
             :auto-upload="true"
             :show-file-list="false"
-            action=""
-            :http-request="upload"
+            action="/upload"
             name="file"
             :on-success="uploadSuccess"
           >
+          <!-- :http-request="upload" -->
             <img
               v-if="articleModel.coverImg"
               :src="articleModel.coverImg"
