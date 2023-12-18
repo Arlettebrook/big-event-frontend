@@ -160,8 +160,8 @@ const upload = (param) => {
     method: "post",
     body: formData,
     headers: {
-      "Origin": "https://telegra.ph",
-      "Referer": "https://telegra.ph",
+      Origin: "https://telegra.ph",
+      Referer: "https://telegra.ph",
     },
   })
     .then((response) => {
@@ -184,7 +184,9 @@ const upload = (param) => {
 
 // 上传图片:上传成功的回调
 const uploadSuccess = (result) => {
-  console.log(result);
+  url = "https://telegra.ph/" + result[0]["src"];
+  console.log(url);
+  articleModel.value.coverImg = url;
 };
 
 // 调用添加文章接口
@@ -298,7 +300,7 @@ const articleAdd = async () => {
             name="file"
             :on-success="uploadSuccess"
           >
-          <!-- :http-request="upload" -->
+            <!-- :http-request="upload" -->
             <img
               v-if="articleModel.coverImg"
               :src="articleModel.coverImg"

@@ -10,15 +10,10 @@ export async function onRequest(context) {
   } = context;
   console.log(context.request);
   const url = new URL(request.url);
-  console.log(url);
-  console.log(request.method)
-  console.log(request.body)
-  console.log(request.headers)
   const response = await fetch("https://telegra.ph/" + url.pathname + url.search, {
     method: request.method,
     body: request.body,
     headers: request.headers
-    
   })
     .then((response) => {
       console.log("请求成功", response);
