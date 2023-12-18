@@ -158,7 +158,11 @@ const upload = (param) => {
   const url = "/upload";
   fetch(url, {
     method: "post",
-    boday: formData,
+    body: formData,
+    headers: {
+      "Origin": "https://telegra.ph",
+      "Referer": "https://telegra.ph",
+    },
   })
     .then((response) => {
       response.text();
@@ -166,7 +170,7 @@ const upload = (param) => {
       console.log("请求成功", response.body);
     })
     .then((data) => {
-      console("数据：", data);
+      console.log("数据：", data);
     })
     .catch((error) => {
       console.log(error);
