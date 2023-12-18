@@ -161,8 +161,11 @@ const upload = (param) => {
     boday: formData,
   })
     .then((response) => {
+      response.json()
       console.log("请求成功", response);
       console.log("请求成功", response.body);
+    }).then(data=>{
+      console('数据：',data)
     })
     .catch((error) => {
       console.error("请求失败", error);
