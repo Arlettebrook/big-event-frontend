@@ -21,13 +21,13 @@ export async function onRequest(context) {
     .then((response) => response.text())
     .then((data) => {
       console.log(data);
-      return new Response(data);
+      return data;
     })
     .catch((error) => {
       console.log(error);
-      return new Response(error + "服务服务器异常");
+      return error + "服务服务器异常";
     });
 
 
-  return response;
+  return new Response(response);
 }
