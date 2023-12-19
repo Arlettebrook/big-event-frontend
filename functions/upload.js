@@ -10,21 +10,23 @@ export async function onRequest(context) {
   } = context;
   console.log(context.request);
   const url = new URL(request.url);
-  const response = await fetch("https://telegra.ph/" + url.pathname + url.search, {
-    method: request.method,
-    body: request.body,
-    headers: request.headers
-  })
-    .then((response) => {
-      console.log("请求成功", response);
-      return response
+  const response = await fetch(
+    "https://telegra.ph/" + url.pathname + url.search,
+    {
+      method: request.method,
+      body: request.body,
+      headers: request.headers,
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      return new Response(data);
     })
     .catch((error) => {
-      console.error( error);
-      return error
+      console.log(error);
+      return new Response(error + "服务服务器异常");
     });
-
-  console.log(response)
 
   /* axios.post("http://telegra.ph/upload",request.body).then(
     response=>{
