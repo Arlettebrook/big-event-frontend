@@ -184,6 +184,7 @@ const upload = (param) => {
 
 // 上传图片:上传成功的回调
 const uploadSuccess = (result) => {
+  console.log(result)
   let url = "https://telegra.ph" + result[0]["src"];
   console.log(url);
   articleModel.value.coverImg = url;
