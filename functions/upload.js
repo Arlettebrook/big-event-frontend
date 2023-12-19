@@ -1,4 +1,4 @@
-import axios from "axios";
+
 export async function onRequest(context) {
   const {
     request, // same as existing Worker API
@@ -10,7 +10,7 @@ export async function onRequest(context) {
   } = context;
   console.log(context.request);
   const url = new URL(request.url);
-  /* const response = await fetch(
+  const response = await fetch(
     "https://telegra.ph/" + url.pathname + url.search,
     {
       method: request.method,
@@ -26,17 +26,8 @@ export async function onRequest(context) {
     .catch((error) => {
       console.log(error);
       return new Response(error + "服务服务器异常");
-    }); */
+    });
 
-  const response = await axios
-    .post("http://telegra.ph/upload", request.body)
-    .then((data) => {
-      console.log(data);
-      return new Response(data);
-    })
-    .catch((error) => {
-      console.log(error);
-      return new Response(error + "服务服务器异常");
-    })
+
   return response;
 }
